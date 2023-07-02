@@ -13,7 +13,9 @@ import ru.aasmc.filmservice.model.SearchBy
 import ru.aasmc.filmservice.model.SortBy
 import ru.aasmc.filmservice.model.mapper.FilmMapper
 import ru.aasmc.filmservice.service.FilmService
-import ru.aasmc.filmservice.storage.*
+import ru.aasmc.filmservice.storage.DirectorRepository
+import ru.aasmc.filmservice.storage.FilmRepository
+import ru.aasmc.filmservice.storage.FilmSpecificationBuilder
 import java.time.Instant
 
 @Service
@@ -21,7 +23,6 @@ class FilmServiceImpl(
         private val filmRepo: FilmRepository,
         private val mapper: FilmMapper,
         private val applicationEventPublisher: ApplicationEventPublisher,
-        private val genreRepo: GenreRepository,
         private val directorRepo: DirectorRepository
 ) : FilmService {
 
@@ -107,5 +108,9 @@ class FilmServiceImpl(
 
         val films = filmRepo.findAll(specBuilder.build(query.lowercase()), sort)
         return films.map { mapper.mapToDto(it) }
+    }
+
+    override fun userExists(id: Long): Boolean {
+        return filmRepo.getReferenceById(id).id != null
     }
 }

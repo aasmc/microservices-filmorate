@@ -15,4 +15,5 @@ interface FilmService {
     fun getTopFilms(count: Int, genreId: Int? = null, year: Int? = null): List<FilmDto>
     fun getFilmsOfDirector(id: Long, sort: SortBy): List<FilmDto>
     fun search(query: String, by: List<SearchBy>): List<FilmDto>
+    fun userExists(id: Long): Boolean
 }
