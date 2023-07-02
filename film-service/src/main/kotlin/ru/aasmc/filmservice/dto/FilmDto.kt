@@ -1,10 +1,12 @@
 package ru.aasmc.filmservice.dto
 
+import java.time.LocalDate
+
 data class FilmDto(
     val filmId: Long,
     val name: String,
     val description: String,
-    val releaseDate: String,
+    val releaseDate: LocalDate,
     val duration: Int,
     val mpa: MpaDto,
     val rate: Double,

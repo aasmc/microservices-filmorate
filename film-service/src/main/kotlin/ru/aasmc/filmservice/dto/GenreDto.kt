@@ -1,6 +1,6 @@
 package ru.aasmc.filmservice.dto
 
 data class GenreDto(
-    val genreId: Int,
-    val name: String
+        val id: Int,
+        val name: String = ""
 )

@@ -1,5 +1,6 @@
 package ru.aasmc.filmservice.service.impl
 
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Isolation
@@ -15,30 +16,30 @@ import ru.aasmc.filmservice.storage.DirectorRepository
 
 @Service
 class DirectorServiceImpl(
-    private val repo: DirectorRepository
+        private val repo: DirectorRepository
 ) : DirectorService {
     override fun getAll(): List<DirectorDto> {
         return repo.findAll()
-            .map { it.mapToDto() }
+                .map { it.mapToDto() }
     }
 
     override fun getById(id: Long): DirectorDto {
         return repo.findById(id)
-            .orElseThrow {
-                ResourceNotFoundException(message = "Director with ID=$id not found in DB.")
-            }.mapToDto()
+                .orElseThrow {
+                    ResourceNotFoundException(message = "Director with ID=$id not found in DB.")
+                }.mapToDto()
     }
 
     override fun create(request: DirectorRequest): DirectorDto {
         return repo.save(Director(name = request.name))
-            .mapToDto()
+                .mapToDto()
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     override fun update(request: DirectorRequest): DirectorDto {
-        val id = request.directorId ?: throw BusinessServiceException(
-            code = HttpStatus.BAD_REQUEST.value(),
-            message = "Cannot update Director without ID."
+        val id = request.id ?: throw BusinessServiceException(
+                code = HttpStatus.BAD_REQUEST.value(),
+                message = "Cannot update Director without ID."
         )
         checkDirectorId(id)
         repo.updateDirectorById(id, request.name)
@@ -48,11 +49,12 @@ class DirectorServiceImpl(
     private fun checkDirectorId(id: Long) {
         val directorReference = repo.getReferenceById(id)
         directorReference.id ?: throw ResourceNotFoundException(
-            message = "Director with ID=$id not found in DB."
+                message = "Director with ID=$id not found in DB."
         )
     }
 
+    @Transactional
     override fun delete(id: Long) {
-        repo.deleteById(id)
+        repo.deleteDirectorById(id)
     }
 }

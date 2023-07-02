@@ -69,6 +69,52 @@ services:
         aliases:
           - "broker"
 
+  kadeck-db:
+    container_name: "kadeck-db"
+    ports:
+      - "5435:5432"
+    image: postgres:12.6
+    restart: on-failure:3
+    environment:
+      POSTGRES_DB: "kadeckweb"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    networks:
+      backend:
+        aliases:
+          - "kadeck-db"
+
+  kadeck:
+    container_name: "kadeck"
+    ports:
+      - "80:80"
+    image: xeotek/kadeck-allinone:latest
+    environment:
+      xeotek_kadeck_home: "kadeckweb"
+      xeotek_kadeck_db_username: "postgres"
+      xeotek_kadeck_db_password: "postgres"
+      xeotek_kadeck_db_url: "jdbc:postgresql://kadeck-db:5432/kadeckweb"
+    networks:
+      backend:
+        aliases:
+          - "kadeck"
+
+  cmak:
+    image: hlebalbau/kafka-manager:stable
+    container_name: "cmak"
+    restart: always
+    ports:
+      - "9000:9000"
+    environment:
+      ZK_HOSTS: "zookeeper:2181"
+    depends_on:
+      - zookeeper
+      - broker
+    networks:
+      backend:
+        aliases:
+          - "cmak"
+
 networks:
   backend:
     driver: bridge

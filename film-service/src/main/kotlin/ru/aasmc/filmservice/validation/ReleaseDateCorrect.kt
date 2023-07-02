@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
 annotation class ReleaseDateCorrect(
     val message: String = "Invalid release date.",
     val groups: Array<KClass<*>> = [],
-    val payLoad: Array<KClass<out Payload>> = []
+    val payload: Array<KClass<out Payload>> = []
 )
 
 private val THRESHOLD = LocalDate.of(1895, Month.DECEMBER, 28)

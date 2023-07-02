@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS FILMS (
                          RELEASE_DATE DATE NOT NULL,
                          DURATION INTEGER NOT NULL,
                          RATING_ID INTEGER NOT NULL,
+                         RATE REAL NOT NULL,
                          CONSTRAINT FILMS_RATING_ID_FK FOREIGN KEY (RATING_ID) REFERENCES RATING(ID)
 );
 

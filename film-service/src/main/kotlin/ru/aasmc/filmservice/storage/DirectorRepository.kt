@@ -10,4 +10,10 @@ interface DirectorRepository: JpaRepository<Director, Long> {
     @Modifying
     @Query("update Director set name = :newName where id = :id")
     fun updateDirectorById(@Param("id") id: Long, @Param("newName") newName: String)
+
+    fun findAllByIdIn(directorIds: List<Long>): MutableList<Director>
+
+    @Query("delete from Director d where d.id =:id")
+    @Modifying
+    fun deleteDirectorById(@Param("id") id: Long): Int
 }
