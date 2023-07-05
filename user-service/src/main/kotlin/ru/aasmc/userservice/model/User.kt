@@ -1,17 +1,7 @@
 package ru.aasmc.userservice.model
 
 import java.time.LocalDate
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.JoinTable
-import javax.persistence.ManyToMany
-import javax.persistence.OneToMany
-import javax.persistence.SequenceGenerator
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name = "USERS")
@@ -22,7 +12,7 @@ class User(
         var name: String,
         @Column(name = "BIRTHDAY")
         var birthDay: LocalDate,
-        @ManyToMany
+        @ManyToMany(fetch = FetchType.LAZY)
         @JoinTable(
                 name = "FRIENDS",
                 joinColumns = [JoinColumn(name = "USER_ID")],

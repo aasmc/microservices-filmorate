@@ -37,6 +37,9 @@ kafkaprops:
   filmLikeTopic: "filmLikes"
   deleteAllLikesTopic: "deleteAllLikes"
 
+urls:
+  userService: localhost:8088
+
 management:
   endpoints:
     web:

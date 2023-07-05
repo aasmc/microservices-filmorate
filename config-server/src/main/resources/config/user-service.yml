@@ -32,7 +32,6 @@ spring:
 
 kafkaprops:
   userFriendTopic: "userFriends"
-  deleteAllFriendsTopic: "deleteAllFriends"
 
 management:
   endpoints:

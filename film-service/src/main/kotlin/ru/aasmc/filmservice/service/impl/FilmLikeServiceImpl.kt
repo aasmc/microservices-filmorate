@@ -3,6 +3,7 @@ package ru.aasmc.filmservice.service.impl
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
+import ru.aasmc.filmservice.client.UserServiceClient
 import ru.aasmc.filmservice.dto.DeleteAllLikesDto
 import ru.aasmc.filmservice.dto.EventOperation
 import ru.aasmc.filmservice.dto.FilmLikeDto
@@ -19,7 +20,8 @@ class FilmLikeServiceImpl(
         private val singleLikeKafkaTemplate: KafkaTemplate<String, FilmLikeDto>,
         private val deleteAllKafkaTemplate: KafkaTemplate<String, DeleteAllLikesDto>,
         private val kafkaProps: KafkaProps,
-        private val filmService: FilmService
+        private val filmService: FilmService,
+        private val userClient: UserServiceClient
 ) : FilmLikeService {
     override fun addLike(filmId: Long, userId: Long, mark: Int) {
         checkFilmId(filmId)
@@ -88,6 +90,8 @@ class FilmLikeServiceImpl(
     }
 
     private fun checkUserId(userId: Long) {
-        // TODO check userId
+        if (!userClient.isUserExists(userId)) {
+            throw ResourceNotFoundException(message = "User with ID=$userId not found in DB.")
+        }
     }
 }
