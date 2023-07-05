@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/2.7.13/7447e272307e17bdb0c86c7c49b66544f2bef5bf/spring-boot-configuration-processor-2.7.13.jar" />
+        </processorPath>
+        <module name="reviews-service.main" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
