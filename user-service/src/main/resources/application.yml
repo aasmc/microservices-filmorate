@@ -1,9 +1,5 @@
 server:
   port: 8088
-  shutdown: graceful
-  netty:
-    connection-timeout: 2s
-    idle-timeout: 15s
 spring:
   application:
     name: user-service

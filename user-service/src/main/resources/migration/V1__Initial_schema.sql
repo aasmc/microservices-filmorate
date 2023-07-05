@@ -3,7 +3,7 @@ CREATE TABLE USERS (
                     EMAIL VARCHAR(30) NOT NULL,
                     LOGIN VARCHAR(30) NOT NULL,
                     NAME VARCHAR(30),
-                    BIRTHDAY DATE,
+                    BIRTHDAY DATE
 );
 
 CREATE TABLE FRIENDS (
