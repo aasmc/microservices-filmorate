@@ -28,6 +28,12 @@ spring:
             - Path=/films/**, /directors/**, /genres/**, /mpa/**
           filters:
             - RemoveRequestHeader= Cookie, Set-Cookie
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/users/**
+          filters:
+            - RemoveRequestHeader= Cookie, Set-Cookie
 
 management:
   endpoints:
