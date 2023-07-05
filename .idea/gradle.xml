@@ -39,6 +39,15 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/rating-service" />
+        <option name="gradleJvm" value="corretto-19" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/rating-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/reviews-service" />
         <option name="gradleJvm" value="corretto-19" />
         <option name="modules">
