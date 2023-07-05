@@ -97,13 +97,17 @@ services:
   kadeck-db:
     container_name: "kadeck-db"
     ports:
-      - "5435:5432"
+      - "5435:5435"
     image: postgres:12.6
     restart: on-failure:3
     environment:
       POSTGRES_DB: "kadeckweb"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
+    expose:
+      - "5435"
+    command:
+      - -p 5435
     networks:
       backend:
         aliases:
