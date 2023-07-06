@@ -34,6 +34,12 @@ spring:
             - Path=/users/**
           filters:
             - RemoveRequestHeader= Cookie, Set-Cookie
+        - id: review-service
+          uri: lb://review-service
+          predicated:
+            - Path=/reviews/**
+          filters:
+            - RemoveRequestHeader= Cookie, Set-Cookie
 
 management:
   endpoints:
