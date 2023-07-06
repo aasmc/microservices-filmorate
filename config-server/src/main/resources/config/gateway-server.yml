@@ -36,8 +36,14 @@ spring:
             - RemoveRequestHeader= Cookie, Set-Cookie
         - id: review-service
           uri: lb://review-service
-          predicated:
+          predicates:
             - Path=/reviews/**
+          filters:
+            - RemoveRequestHeader= Cookie, Set-Cookie
+        - id: rating-service
+          uri: lb://rating-service
+          predicates:
+            - Path=/rating/**
           filters:
             - RemoveRequestHeader= Cookie, Set-Cookie
 

@@ -19,7 +19,7 @@ class UserFriendEventListener (
     fun handleUserFriendEvent(event: UserFriendEvent) {
         log.info("Handling User Friend Event: {}", event)
         service.sendEventToKafka(UserFriendEventDto(
-                timestamp = event.timestamp,
+                timestamp = event.timeStamp,
                 userId = event.userId,
                 friendId = event.friendId,
                 operation = event.operation

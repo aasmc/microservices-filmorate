@@ -8,15 +8,15 @@ import javax.validation.constraints.Past
 import javax.validation.constraints.Pattern
 
 data class UserDto(
-        @Email(message = "Некорректный email")
-        @NotEmpty(message = "email не может быть пустым")
+        @field:Email(message = "Некорректный email")
+        @field:NotEmpty(message = "email не может быть пустым")
         val email: String,
-        @NotEmpty(message = "Логин не может быть пустым")
-        @Pattern(regexp = "\\S+", message = "Логин не может содержать пробелы")
+        @field:NotEmpty(message = "Логин не может быть пустым")
+        @field:Pattern(regexp = "\\S+", message = "Логин не может содержать пробелы")
         val login: String,
         val name: String?,
-        @NotNull
-        @Past(message = "Дата рождения не может быть в будущем времени")
-        val birthDay: LocalDate,
+        @field:NotNull
+        @field:Past(message = "Дата рождения не может быть в будущем времени")
+        val birthday: LocalDate,
         val id: Long? = null
 )

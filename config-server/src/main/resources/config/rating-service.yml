@@ -1,0 +1,38 @@
+server:
+  port: 8090
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: ${spring.application.name}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: filmorate-db
+
+eureka:
+  instance:
+    preferIpAddress: true
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:8085/eureka/
+  server:
+    waitTimeInMsWhenSyncEmpty: 5
+
+kafkaprops:
+  filmLikeTopic: "filmLikes"
+  deleteAllLikesTopic: "deleteAllLikes"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

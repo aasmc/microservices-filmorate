@@ -64,9 +64,12 @@ class FilmServiceImpl(
 
     @Transactional
     override fun update(request: FilmRequest): FilmDto {
-        val toUpdate = mapper.mapToDomain(request)
-        val updated = filmRepo.save(toUpdate)
-        return mapper.mapToDto(updated)
+        if (filmRepo.existsById(request.id ?: 0)) {
+            val toUpdate = mapper.mapToDomain(request)
+            val updated = filmRepo.save(toUpdate)
+            return mapper.mapToDto(updated)
+        }
+        throw ResourceNotFoundException(message = "Film with ID=${request.id} not found.")
     }
 
     override fun getTopFilms(count: Int, genreId: Int?, year: Int?): List<FilmDto> {

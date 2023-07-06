@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable
 @FeignClient(name = "rating-service-client", url = "\${urls.ratingService}")
 interface RatingServiceClient {
 
-    @GetMapping("/films/{userId}")
+    @GetMapping("/rating/films/{userId}")
     fun getFilmIdsOfUser(@PathVariable("userId") userId: Long): List<Long>
+
+    @GetMapping("/rating/{filmId}")
+    fun getFilmRating(@PathVariable("filmId") filmId: Long): Double
 
 }

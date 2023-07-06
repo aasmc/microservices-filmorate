@@ -29,7 +29,7 @@ class UserServiceImpl(
             applicationEventPublisher.publishEvent(
                     UserFriendEvent(
                             source = this,
-                            timestamp = Instant.now().toEpochMilli(),
+                            timeStamp = Instant.now().toEpochMilli(),
                             userId = userId,
                             operation = EventOperation.REMOVE,
                             friendId = friendId
@@ -44,7 +44,7 @@ class UserServiceImpl(
             applicationEventPublisher.publishEvent(
                     UserFriendEvent(
                             source = this,
-                            timestamp = Instant.now().toEpochMilli(),
+                            timeStamp = Instant.now().toEpochMilli(),
                             userId = userId,
                             friendId = friendId,
                             operation = EventOperation.ADD
@@ -91,7 +91,7 @@ class UserServiceImpl(
         val rowsUpdated = userRepository.updateUser(dto.email,
                 dto.login,
                 dto.name ?: dto.login,
-                dto.birthDay,
+                dto.birthday,
                 dto.id ?: 0)
         if (rowsUpdated != 0) {
             return dto
@@ -107,7 +107,7 @@ class UserServiceImpl(
             applicationEventPublisher.publishEvent(
                     UserFriendEvent(
                             source = this,
-                            timestamp = Instant.now().toEpochMilli(),
+                            timeStamp = Instant.now().toEpochMilli(),
                             userId = userId,
                             operation = EventOperation.REMOVE_ALL,
                             friendId = -1

@@ -86,7 +86,7 @@ class ReviewServiceImpl(
         applicationEventPublisher.publishEvent(
                 ReviewEvent(
                         source = this,
-                        timestamp = Instant.now().toEpochMilli(),
+                        timeStamp = Instant.now().toEpochMilli(),
                         reviewId = saved.id!!,
                         operation = EventOperation.ADD,
                         userId = dto.userId
@@ -105,7 +105,7 @@ class ReviewServiceImpl(
         applicationEventPublisher.publishEvent(
                 ReviewEvent(
                         source = this,
-                        timestamp = Instant.now().toEpochMilli(),
+                        timeStamp = Instant.now().toEpochMilli(),
                         reviewId = dto.id!!,
                         operation = EventOperation.UPDATE,
                         userId = dto.userId
@@ -122,7 +122,7 @@ class ReviewServiceImpl(
             applicationEventPublisher.publishEvent(
                     ReviewEvent(
                             source = this,
-                            timestamp = Instant.now().toEpochMilli(),
+                            timeStamp = Instant.now().toEpochMilli(),
                             reviewId = reviewId,
                             operation = EventOperation.REMOVE,
                             userId = review.userId

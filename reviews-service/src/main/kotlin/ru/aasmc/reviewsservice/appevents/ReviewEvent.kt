@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationEvent
 
 class ReviewEvent(
         source: Any,
-        val timestamp: Long,
+        val timeStamp: Long,
         val reviewId: Long,
         val operation: EventOperation,
         val userId: Long

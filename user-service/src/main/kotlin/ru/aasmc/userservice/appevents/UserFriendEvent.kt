@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationEvent
 
 class UserFriendEvent(
         source: Any,
-        val timestamp: Long,
+        val timeStamp: Long,
         val userId: Long,
         val operation: EventOperation,
         val friendId: Long
