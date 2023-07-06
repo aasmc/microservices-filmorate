@@ -128,4 +128,18 @@ class FilmController(
         log.info("Received GET request to check if Film with ID={} exists.", filmId)
         return ResponseEntity.ok(filmService.isFilmExists(filmId))
     }
+
+    @GetMapping("/common")
+    @ResponseStatus(HttpStatus.OK)
+    fun getCommonFilms(
+            @RequestParam("userId") userId: Long,
+            @RequestParam("friendId") friendId: Long
+    ): List<FilmDto> {
+        log.info(
+                "Received request to GET common films for user with ID={} and friend with ID={}",
+                userId,
+                friendId
+        )
+        return filmService.getCommonFilms(userId, friendId)
+    }
 }

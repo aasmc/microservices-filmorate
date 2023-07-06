@@ -47,4 +47,6 @@ interface FilmRepository : JpaRepository<Film, Long>, JpaSpecificationExecutor<F
     @Modifying
     @Query("delete from Film f where f.id = :id")
     fun deleteFilmById(@Param("id") id: Long): Int
+
+    fun findAllByIdIn(filmIds: List<Long>): List<Film>
 }

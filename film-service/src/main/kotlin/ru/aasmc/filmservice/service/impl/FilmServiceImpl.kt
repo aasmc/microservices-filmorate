@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.aasmc.filmservice.appevents.AllLikesDeletedEvent
+import ru.aasmc.filmservice.client.RatingServiceClient
 import ru.aasmc.filmservice.dto.FilmDto
 import ru.aasmc.filmservice.dto.FilmRequest
 import ru.aasmc.filmservice.exceptions.ResourceNotFoundException
@@ -23,7 +24,8 @@ class FilmServiceImpl(
         private val filmRepo: FilmRepository,
         private val mapper: FilmMapper,
         private val applicationEventPublisher: ApplicationEventPublisher,
-        private val directorRepo: DirectorRepository
+        private val directorRepo: DirectorRepository,
+        private val ratingClient: RatingServiceClient
 ) : FilmService {
 
     override fun getById(filmId: Long): FilmDto {
@@ -116,5 +118,17 @@ class FilmServiceImpl(
 
     override fun isFilmExists(filmId: Long): Boolean {
         return filmRepo.existsById(filmId)
+    }
+
+    override fun getCommonFilms(userId: Long, friendId: Long): List<FilmDto> {
+        val userFilmIds = ratingClient.getFilmIdsOfUser(userId)
+        val friendFilmIds = ratingClient.getFilmIdsOfUser(friendId)
+        val userFilms = filmRepo.findAllByIdIn(userFilmIds)
+                .toHashSet()
+        val friendFilms = filmRepo.findAllByIdIn(friendFilmIds)
+                .toHashSet()
+        userFilms.retainAll(friendFilms)
+        return userFilms.map { mapper.mapToDto(it) }
+                .sortedByDescending { it.rate }
     }
 }
