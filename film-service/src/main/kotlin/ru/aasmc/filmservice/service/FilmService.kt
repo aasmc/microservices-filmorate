@@ -16,4 +16,5 @@ interface FilmService {
     fun getFilmsOfDirector(id: Long, sort: SortBy): List<FilmDto>
     fun search(query: String, by: List<SearchBy>): List<FilmDto>
     fun userExists(id: Long): Boolean
+    fun isFilmExists(filmId: Long): Boolean
 }

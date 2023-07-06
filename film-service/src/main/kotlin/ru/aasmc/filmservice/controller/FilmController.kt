@@ -2,6 +2,7 @@ package ru.aasmc.filmservice.controller
 
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import ru.aasmc.filmservice.dto.FilmDto
 import ru.aasmc.filmservice.dto.FilmRequest
@@ -119,5 +120,12 @@ class FilmController(
     fun deleteFilm(@PathVariable("filmId") filmId: Long) {
         log.info("Received request to DELETE film with id={}", filmId)
         filmService.delete(filmId)
+    }
+
+    @GetMapping("/exists/{filmId}")
+    @ResponseStatus(HttpStatus.OK)
+    fun isFilmExists(@PathVariable("filmId") filmId: Long): ResponseEntity<Boolean> {
+        log.info("Received GET request to check if Film with ID={} exists.", filmId)
+        return ResponseEntity.ok(filmService.isFilmExists(filmId))
     }
 }

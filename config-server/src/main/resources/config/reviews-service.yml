@@ -1,0 +1,44 @@
+eureka:
+  instance:
+    preferIpAddress: true
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:8085/eureka/
+  server:
+    waitTimeInMsWhenSyncEmpty: 5
+
+spring:
+  kafka:
+    client-id: ${spring.application.name}
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5436/filmorate_review
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+kafkaprops:
+  reviewsTopic: "reviewEvents"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+urls:
+  userService: localhost:8088
+  filmService: localhost:8082

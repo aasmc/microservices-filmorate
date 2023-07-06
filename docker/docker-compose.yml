@@ -46,6 +46,31 @@ services:
       timeout: 5s
       retries: 5
 
+  postgres-review:
+    image: postgres:15.3
+    ports:
+      - "5436:5436"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "filmorate_review"
+      PGDATA: /data/postgres
+    volumes:
+      - ./postgres-user:/data/postgres
+    expose:
+      - "5436"
+    command:
+      - -p 5436
+    networks:
+      backend:
+        aliases:
+          - "postgres-review"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   mongo:
     container_name: mongo
     image: mongo:4.4.14-rc0-focal

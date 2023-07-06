@@ -113,4 +113,8 @@ class FilmServiceImpl(
     override fun userExists(id: Long): Boolean {
         return filmRepo.getReferenceById(id).id != null
     }
+
+    override fun isFilmExists(filmId: Long): Boolean {
+        return filmRepo.existsById(filmId)
+    }
 }
