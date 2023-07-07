@@ -73,7 +73,7 @@ services:
 
   mongo:
     container_name: mongo
-    image: mongo:4.4.14-rc0-focal
+    image: mongo:4.4.14
     restart: always
     ports:
       - "27017:27017"
@@ -81,6 +81,11 @@ services:
       - "27017"
     volumes:
       - ./mongo-data:/data/db
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    healthcheck:
+      test: test $$(echo "rs.initiate({_id:'rs0',members:[{_id:0,host:\"mongo:27017\"}]}).ok || rs.status().ok" | mongo --port 27017 --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
     networks:
       backend:
         aliases:
@@ -119,55 +124,55 @@ services:
         aliases:
           - "broker"
 
-  kadeck-db:
-    container_name: "kadeck-db"
-    ports:
-      - "5435:5435"
-    image: postgres:12.6
-    restart: on-failure:3
-    environment:
-      POSTGRES_DB: "kadeckweb"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-    expose:
-      - "5435"
-    command:
-      - -p 5435
-    networks:
-      backend:
-        aliases:
-          - "kadeck-db"
-
-  kadeck:
-    container_name: "kadeck"
-    ports:
-      - "80:80"
-    image: xeotek/kadeck-allinone:latest
-    environment:
-      xeotek_kadeck_home: "kadeckweb"
-      xeotek_kadeck_db_username: "postgres"
-      xeotek_kadeck_db_password: "postgres"
-      xeotek_kadeck_db_url: "jdbc:postgresql://kadeck-db:5432/kadeckweb"
-    networks:
-      backend:
-        aliases:
-          - "kadeck"
-
-  cmak:
-    image: hlebalbau/kafka-manager:stable
-    container_name: "cmak"
-    restart: always
-    ports:
-      - "9000:9000"
-    environment:
-      ZK_HOSTS: "zookeeper:2181"
-    depends_on:
-      - zookeeper
-      - broker
-    networks:
-      backend:
-        aliases:
-          - "cmak"
+#  kadeck-db:
+#    container_name: "kadeck-db"
+#    ports:
+#      - "5435:5435"
+#    image: postgres:12.6
+#    restart: on-failure:3
+#    environment:
+#      POSTGRES_DB: "kadeckweb"
+#      POSTGRES_USER: "postgres"
+#      POSTGRES_PASSWORD: "postgres"
+#    expose:
+#      - "5435"
+#    command:
+#      - -p 5435
+#    networks:
+#      backend:
+#        aliases:
+#          - "kadeck-db"
+#
+#  kadeck:
+#    container_name: "kadeck"
+#    ports:
+#      - "80:80"
+#    image: xeotek/kadeck-allinone:latest
+#    environment:
+#      xeotek_kadeck_home: "kadeckweb"
+#      xeotek_kadeck_db_username: "postgres"
+#      xeotek_kadeck_db_password: "postgres"
+#      xeotek_kadeck_db_url: "jdbc:postgresql://kadeck-db:5432/kadeckweb"
+#    networks:
+#      backend:
+#        aliases:
+#          - "kadeck"
+#
+#  cmak:
+#    image: hlebalbau/kafka-manager:stable
+#    container_name: "cmak"
+#    restart: always
+#    ports:
+#      - "9000:9000"
+#    environment:
+#      ZK_HOSTS: "zookeeper:2181"
+#    depends_on:
+#      - zookeeper
+#      - broker
+#    networks:
+#      backend:
+#        aliases:
+#          - "cmak"
 
 networks:
   backend:

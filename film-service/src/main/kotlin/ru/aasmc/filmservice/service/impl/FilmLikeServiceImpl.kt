@@ -3,6 +3,8 @@ package ru.aasmc.filmservice.service.impl
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import ru.aasmc.filmservice.client.RatingServiceClient
 import ru.aasmc.filmservice.client.UserServiceClient
 import ru.aasmc.filmservice.dto.DeleteAllLikesDto
 import ru.aasmc.filmservice.dto.EventOperation
@@ -16,12 +18,14 @@ import java.time.Instant
 private val log = LoggerFactory.getLogger(FilmLikeServiceImpl::class.java)
 
 @Service
+@Transactional
 class FilmLikeServiceImpl(
         private val singleLikeKafkaTemplate: KafkaTemplate<String, FilmLikeDto>,
         private val deleteAllKafkaTemplate: KafkaTemplate<String, DeleteAllLikesDto>,
         private val kafkaProps: KafkaProps,
         private val filmService: FilmService,
-        private val userClient: UserServiceClient
+        private val userClient: UserServiceClient,
+        private val rateClient: RatingServiceClient
 ) : FilmLikeService {
     override fun addLike(filmId: Long, userId: Long, mark: Int) {
         checkFilmId(filmId)

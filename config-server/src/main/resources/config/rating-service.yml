@@ -3,16 +3,28 @@ server:
 spring:
   kafka:
     bootstrap-servers: localhost:9092
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
     consumer:
       bootstrap-servers: localhost:9092
       group-id: ${spring.application.name}
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: ru.aasmc.ratingservice.dto.FilmLikeDto
+
   data:
     mongodb:
       host: localhost
       port: 27017
+      replica-set-name: "rs0"
+#      uri: mongodb://localhost:27017/?connect=direct&replicaSet=singleNodeReplSet&readPreference=primary
       database: filmorate-db
 
 eureka:
@@ -30,6 +42,7 @@ eureka:
 kafkaprops:
   filmLikeTopic: "filmLikes"
   deleteAllLikesTopic: "deleteAllLikes"
+  newRatingTopic: "newRatings"
 
 management:
   endpoints:

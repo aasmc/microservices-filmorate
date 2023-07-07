@@ -18,4 +18,5 @@ interface FilmService {
     fun userExists(id: Long): Boolean
     fun isFilmExists(filmId: Long): Boolean
     fun getCommonFilms(userId: Long, friendId: Long): List<FilmDto>
+    fun setRateToFilm(filmId: Long, rate: Double)
 }

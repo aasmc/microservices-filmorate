@@ -134,4 +134,8 @@ class FilmServiceImpl(
         return userFilms.map { mapper.mapToDto(it) }
                 .sortedByDescending { it.rate }
     }
+
+    override fun setRateToFilm(filmId: Long, rate: Double) {
+        filmRepo.setRateToFilm(rate, filmId)
+    }
 }
