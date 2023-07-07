@@ -50,7 +50,7 @@ class FilmLikeEventListener(
             }
 
             EventOperation.REMOVE -> {
-                filmLikeService.removeFilmLike(id, event.dto.timestamp)
+                filmLikeService.removeFilmLike(id)
             }
         }
     }

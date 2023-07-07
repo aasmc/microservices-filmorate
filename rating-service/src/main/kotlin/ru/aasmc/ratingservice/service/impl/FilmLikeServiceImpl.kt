@@ -19,11 +19,11 @@ class FilmLikeServiceImpl(
 ) : FilmLikeService {
     override fun saveFilmLike(filmLike: FilmLike) {
         filmLikeRepo.save(filmLike)
-        publishNewRatingEvent(filmLike.id)
+        publishNewRatingEvent(filmLike.id!!)
     }
 
-    override fun removeFilmLike(id: FilmLikeId, timeStamp: Long) {
-        filmLikeRepo.removeFilmLikeByIdAndTimestampEquals(id, timeStamp)
+    override fun removeFilmLike(id: FilmLikeId) {
+        filmLikeRepo.removeFilmLikeById(id)
         publishNewRatingEvent(id)
     }
 

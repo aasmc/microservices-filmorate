@@ -7,14 +7,14 @@ import ru.aasmc.ratingservice.model.FilmLikeId
 
 interface FilmLikeDataRepository : MongoRepository<FilmLike, FilmLikeId> {
 
-    fun removeFilmLikeByIdAndTimestampEquals(id: FilmLikeId, timestamp: Long)
+    fun removeFilmLikeById(id: FilmLikeId)
 
     fun removeAllById_FilmIdAndTimestampLessThanEqual(filmId: Long, timestamp: Long)
 
     @Query("{ '_id.userId': ?0 }", fields = "{'_id': 0, '_id.filmId': 1}")
-    fun findAllFilmIdByUserId(userId: Long): List<Long>
+    fun findAllFilmIdByUserId(userId: Long): List<FilmLike>
 
     @Query("{'_id.filmId': ?0 }", fields = "{'_id': 0, 'mark': 1}")
-    fun findAllMarksByFilmId(filmId: Long): List<Int>
+    fun findAllMarksByFilmId(filmId: Long): List<FilmLike>
 
 }

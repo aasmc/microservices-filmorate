@@ -135,6 +135,7 @@ class FilmServiceImpl(
                 .sortedByDescending { it.rate }
     }
 
+    @Transactional
     override fun setRateToFilm(filmId: Long, rate: Double) {
         filmRepo.setRateToFilm(rate, filmId)
     }

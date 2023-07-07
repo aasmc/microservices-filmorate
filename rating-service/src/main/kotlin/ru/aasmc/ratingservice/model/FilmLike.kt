@@ -6,9 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document("filmLikes")
 class FilmLike(
         @Id
-        var id: FilmLikeId,
-        var timestamp: Long,
-        var mark: Int
+        var id: FilmLikeId?,
+        var timestamp: Long?,
+        var mark: Int?
 )
 
 class FilmLikeId {

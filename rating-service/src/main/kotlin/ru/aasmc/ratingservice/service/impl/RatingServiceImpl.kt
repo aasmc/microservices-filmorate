@@ -10,10 +10,12 @@ class RatingServiceImpl(
 ) : RatingService {
     override fun getFilmsLikedByUser(userId: Long): List<Long> {
         return filmLikeRepo.findAllFilmIdByUserId(userId)
+                .map { it.id!!.filmId }
     }
 
     override fun getFilmRating(filmId: Long): Double {
         val marks = filmLikeRepo.findAllMarksByFilmId(filmId)
+                .map { it.mark ?: 0 }
         return if (marks.isEmpty()) {
             0.0
         } else {

@@ -3,6 +3,7 @@ package ru.aasmc.filmservice.service.impl
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Service
 import ru.aasmc.filmservice.appevents.FilmRateEvent
 import ru.aasmc.filmservice.dto.FilmRateDto
@@ -14,6 +15,12 @@ private val log = LoggerFactory.getLogger(KafkaFilmRateMessageConsumer::class.ja
 class KafkaFilmRateMessageConsumer(
         private val applicationEventPublisher: ApplicationEventPublisher
 ) : FilmRateMessageConsumer<ConsumerRecord<String, FilmRateDto>> {
+
+    @KafkaListener(
+            topics = ["\${kafkaprops.newRatingTopic}"],
+            groupId = "\${spring.application.name}",
+            autoStartup = "true"
+    )
     override fun consume(record: ConsumerRecord<String, FilmRateDto>) {
         val dto = record.value()
         log.info(

@@ -104,8 +104,8 @@ class FilmController(
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     fun search(
-        @RequestParam query: String,
-        @RequestParam searchBy: List<SearchBy>
+        @RequestParam("query") query: String,
+        @RequestParam("by") searchBy: List<SearchBy>
     ): List<FilmDto> {
         log.info(
             "Received GET request to search for films by query={}, searchFilters={}",

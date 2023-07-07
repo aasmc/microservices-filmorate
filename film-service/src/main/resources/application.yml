@@ -21,3 +21,8 @@ spring:
 urls:
   userService: localhost:8088
   ratingService: localhost:8090
+
+kafkaprops:
+  filmLikeTopic: "filmLikes"
+  deleteAllLikesTopic: "deleteAllLikes"
+  newRatingTopic: "newRatings"
