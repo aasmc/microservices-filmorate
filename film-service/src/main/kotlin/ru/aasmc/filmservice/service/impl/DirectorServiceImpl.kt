@@ -47,10 +47,11 @@ class DirectorServiceImpl(
     }
 
     private fun checkDirectorId(id: Long) {
-        val directorReference = repo.getReferenceById(id)
-        directorReference.id ?: throw ResourceNotFoundException(
-                message = "Director with ID=$id not found in DB."
-        )
+        if (!repo.existsById(id)) {
+            throw ResourceNotFoundException(
+                    message = "Director with ID=$id not found in DB."
+            )
+        }
     }
 
     @Transactional

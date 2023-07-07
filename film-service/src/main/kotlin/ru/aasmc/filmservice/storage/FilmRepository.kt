@@ -9,13 +9,13 @@ import org.springframework.data.repository.query.Param
 import ru.aasmc.filmservice.model.Film
 
 interface FilmRepository : JpaRepository<Film, Long>, JpaSpecificationExecutor<Film> {
-    @Query("select f from Film f order by f.rate desc")
+    @Query("select f from Film f order by f.rate desc, f.id")
     fun findAllSorted(): List<Film>
 
-    @Query("select f from Film f order by f.rate desc")
+    @Query("select f from Film f order by f.rate desc, f.id")
     fun findAllSortedLimit(pageable: Pageable): List<Film>
 
-    @Query("select f from Film f where year(f.releaseDate) =:year order by f.rate desc")
+    @Query("select f from Film f where year(f.releaseDate) =:year order by f.rate desc, f.id")
     fun findAllByYearOrderByRateDesc(@Param("year") year: Int, pageable: Pageable): List<Film>
 
     @Query("""
@@ -25,6 +25,7 @@ interface FilmRepository : JpaRepository<Film, Long>, JpaSpecificationExecutor<F
         LEFT JOIN FILM_DIRECTOR fd ON f.id = fd.film_id
         LEFT JOIN DIRECTORS d ON d.id = fd.director_id
         WHERE fg.genre_id = ? 
+        ORDER BY f.rate DESC, f.id 
         LIMIT ?
     """, nativeQuery = true )
     fun findAllByGenreSortedByRate(@Param("genreId") genreId: Int, count: Int): List<Film>
@@ -36,6 +37,7 @@ interface FilmRepository : JpaRepository<Film, Long>, JpaSpecificationExecutor<F
         LEFT JOIN FILM_DIRECTOR fd ON f.id = fd.film_id
         LEFT JOIN DIRECTORS d ON d.id = fd.director_id
         WHERE fg.genre_id = ? AND EXTRACT(YEAR FROM CAST(f.release_date AS date)) = ? 
+        ORDER BY f.rate DESC, f.id  
         LIMIT ?
     """, nativeQuery = true )
     fun findAllByGenresAndYearSortedByRate(
