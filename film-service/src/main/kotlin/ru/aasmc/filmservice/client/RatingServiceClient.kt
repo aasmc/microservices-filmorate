@@ -13,4 +13,7 @@ interface RatingServiceClient {
     @GetMapping("/rating/{filmId}")
     fun getFilmRating(@PathVariable("filmId") filmId: Long): Double
 
+    @GetMapping("rating/user/{userId}")
+    fun getRecommendedFilmIdsforUser(@PathVariable("userId") userId: Long): List<Long>
+
 }

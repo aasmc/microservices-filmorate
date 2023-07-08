@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+import ru.aasmc.filmservice.dto.FilmDto
 import ru.aasmc.filmservice.model.Film
 
 interface FilmRepository : JpaRepository<Film, Long>, JpaSpecificationExecutor<Film> {
@@ -50,7 +51,7 @@ interface FilmRepository : JpaRepository<Film, Long>, JpaSpecificationExecutor<F
     @Query("delete from Film f where f.id = :id")
     fun deleteFilmById(@Param("id") id: Long): Int
 
-    fun findAllByIdIn(filmIds: List<Long>): List<Film>
+    fun findAllByIdInOrderByRateDesc(filmIds: List<Long>): List<Film>
 
     @Modifying
     @Query("update Films set rate = ? where id = ?", nativeQuery = true)

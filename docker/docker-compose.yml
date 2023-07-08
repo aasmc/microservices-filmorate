@@ -71,25 +71,50 @@ services:
       timeout: 5s
       retries: 5
 
-  mongo:
-    container_name: mongo
-    image: mongo:4.4.14
-    restart: always
+  postgres-rating:
+    image: postgres:15.3
     ports:
-      - "27017:27017"
-    expose:
-      - "27017"
+      - "5437:5437"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "filmorate_rating"
+      PGDATA: /data/postgres
     volumes:
-      - ./mongo-data:/data/db
-    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
-    healthcheck:
-      test: test $$(echo "rs.initiate({_id:'rs0',members:[{_id:0,host:\"mongo:27017\"}]}).ok || rs.status().ok" | mongo --port 27017 --quiet) -eq 1
-      interval: 10s
-      start_period: 30s
+      - ./postgres-rating:/data/postgres
+    expose:
+      - "5437"
+    command:
+      - -p 5437
     networks:
       backend:
         aliases:
-          - "mongo"
+          - "postgres-rating"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+#  mongo:
+#    container_name: mongo
+#    image: mongo:4.4.14
+#    restart: always
+#    ports:
+#      - "27017:27017"
+#    expose:
+#      - "27017"
+#    volumes:
+#      - ./mongo-data:/data/db
+#    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+#    healthcheck:
+#      test: test $$(echo "rs.initiate({_id:'rs0',members:[{_id:0,host:\"mongo:27017\"}]}).ok || rs.status().ok" | mongo --port 27017 --quiet) -eq 1
+#      interval: 10s
+#      start_period: 30s
+#    networks:
+#      backend:
+#        aliases:
+#          - "mongo"
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1

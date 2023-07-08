@@ -1,4 +1,4 @@
-package ru.aasmc.filmservice.dto
+package ru.aasmc.userservice.dto
 
 import java.time.LocalDate
 
@@ -8,8 +8,8 @@ data class FilmDto(
         val description: String,
         val releaseDate: LocalDate,
         val duration: Int,
-        val mpa: MpaDto,
+        val mpa: MpaDto?,
         val rate: Double,
-        val genres: List<GenreDto>,
-        val directors: List<DirectorDto>
+        val genres: List<GenreDto>?,
+        val directors: List<DirectorDto>?
 )

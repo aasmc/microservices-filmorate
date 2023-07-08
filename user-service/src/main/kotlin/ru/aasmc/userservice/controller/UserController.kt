@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import ru.aasmc.userservice.dto.FilmDto
 import ru.aasmc.userservice.dto.UserDto
 import ru.aasmc.userservice.service.UserService
 import javax.validation.Valid
@@ -107,6 +108,13 @@ class UserController(
     fun isUserExists(@PathVariable("userId") userId: Long): ResponseEntity<Boolean> {
         log.info("Received GET request to check if User with ID={} exists.", userId)
         return ResponseEntity.ok(userService.isUserExists(userId))
+    }
+
+    @GetMapping("/{id}/recommendations")
+    @ResponseStatus(HttpStatus.OK)
+    fun getRecommendations(@PathVariable("id") userId: Long): List<FilmDto> {
+        log.info("Received request to GET recommended films for user with ID={}", userId)
+        return userService.getRecommendations(userId)
     }
 
 }

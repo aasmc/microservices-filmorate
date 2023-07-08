@@ -127,9 +127,9 @@ class FilmServiceImpl(
     override fun getCommonFilms(userId: Long, friendId: Long): List<FilmDto> {
         val userFilmIds = ratingClient.getFilmIdsOfUser(userId)
         val friendFilmIds = ratingClient.getFilmIdsOfUser(friendId)
-        val userFilms = filmRepo.findAllByIdIn(userFilmIds)
+        val userFilms = filmRepo.findAllByIdInOrderByRateDesc(userFilmIds)
                 .toHashSet()
-        val friendFilms = filmRepo.findAllByIdIn(friendFilmIds)
+        val friendFilms = filmRepo.findAllByIdInOrderByRateDesc(friendFilmIds)
                 .toHashSet()
         userFilms.retainAll(friendFilms)
         return userFilms.map { mapper.mapToDto(it) }

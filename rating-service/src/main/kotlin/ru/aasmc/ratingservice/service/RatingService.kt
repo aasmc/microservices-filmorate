@@ -6,4 +6,6 @@ interface RatingService {
 
     fun getFilmRating(filmId: Long): Double
 
+    fun getRecommendationForUser(userId: Long): List<Long>
+
 }

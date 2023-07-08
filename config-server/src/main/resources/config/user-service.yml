@@ -35,6 +35,9 @@ spring:
 kafkaprops:
   userFriendTopic: "userFriends"
 
+urls:
+  recommendationsClient: localhost:8082
+
 management:
   endpoints:
     web:

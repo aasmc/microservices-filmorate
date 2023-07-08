@@ -44,7 +44,7 @@ class FilmLikeEventListener(
                 val filmLike = FilmLike(
                         id = id,
                         timestamp = event.dto.timestamp,
-                        mark = event.dto.mark
+                        mark = event.dto.mark.toDouble()
                 )
                 filmLikeService.saveFilmLike(filmLike)
             }

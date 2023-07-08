@@ -2,11 +2,7 @@ package ru.aasmc.ratingservice.controller
 
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import ru.aasmc.ratingservice.service.RatingService
 
 private val log = LoggerFactory.getLogger(RatingController::class.java)
@@ -35,4 +31,11 @@ class RatingController(
         return rating
     }
 
+    @GetMapping("/user/{userId}")
+    fun getRecommendedUserForUser(@PathVariable("userId") userId: Long): List<Long> {
+        log.info("Received request to GET id of user recommended for user with ID={}", userId)
+        val recommendation = ratingService.getRecommendationForUser(userId)
+        log.info("Recommendation for user with id={} is {}", userId, recommendation)
+        return recommendation
+    }
 }

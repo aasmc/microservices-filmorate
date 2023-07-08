@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.aasmc.userservice.appevents.EventOperation
 import ru.aasmc.userservice.appevents.UserFriendEvent
+import ru.aasmc.userservice.client.RecommendationsClient
+import ru.aasmc.userservice.dto.FilmDto
 import ru.aasmc.userservice.dto.UserDto
 import ru.aasmc.userservice.error.UserServiceException
 import ru.aasmc.userservice.mapper.UserMapper
@@ -20,7 +22,8 @@ import java.time.Instant
 class UserServiceImpl(
         private val userRepository: UserRepository,
         private val applicationEventPublisher: ApplicationEventPublisher,
-        private val userMapper: UserMapper
+        private val userMapper: UserMapper,
+        private val client: RecommendationsClient
 ) : UserService {
 
     override fun removeFriend(userId: Long, friendId: Long) {
@@ -118,6 +121,10 @@ class UserServiceImpl(
 
     override fun isUserExists(userId: Long): Boolean {
         return userRepository.existsById(userId)
+    }
+
+    override fun getRecommendations(userId: Long): List<FilmDto> {
+        return client.getRecommendations(userId)
     }
 
     private fun getUserByIdOrThrow(userId: Long): User {

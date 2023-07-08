@@ -19,13 +19,25 @@ spring:
 #        spring.json.trusted.packages: "*"
 #        spring.json.value.default.type: ru.aasmc.ratingservice.dto.FilmLikeDto
 
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      replica-set-name: "rs0"
+#  data:
+#    mongodb:
+#      host: localhost
+#      port: 27017
+#      replica-set-name: "rs0"
 #      uri: mongodb://localhost:27017/?connect=direct&replicaSet=singleNodeReplSet&readPreference=primary
-      database: filmorate-db
+#      database: filmorate-db
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5437/filmorate_rating
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
 
 eureka:
   instance:

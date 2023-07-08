@@ -46,8 +46,8 @@ class FilmMapper(
                 releaseDate = domain.releaseDate,
                 duration = domain.duration,
                 mpa = domain.mpa.mapToDto(),
-                genres = domain.genres.map { it.mapToDto() }.toSet(),
-                directors = domain.directors.map { it.mapToDto() }.toSet(),
+                genres = domain.genres.map { it.mapToDto() }.sortedBy { it.id },
+                directors = domain.directors.map { it.mapToDto() }.sortedBy { it.id },
                 rate = domain.rate
         )
     }

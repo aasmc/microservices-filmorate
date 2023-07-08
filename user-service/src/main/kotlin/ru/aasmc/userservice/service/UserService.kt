@@ -1,5 +1,6 @@
 package ru.aasmc.userservice.service
 
+import ru.aasmc.userservice.dto.FilmDto
 import ru.aasmc.userservice.dto.UserDto
 
 interface UserService {
@@ -23,5 +24,7 @@ interface UserService {
     fun deleteUser(userId: Long)
 
     fun isUserExists(userId: Long): Boolean
+
+    fun getRecommendations(userId: Long): List<FilmDto>
 
 }
