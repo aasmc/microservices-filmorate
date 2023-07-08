@@ -2,7 +2,7 @@ package ru.aasmc.reviewsservice.service.impl
 
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -31,6 +31,7 @@ class ReviewServiceImpl(
         checkUserExists(userId)
         try {
             reviewRepository.addLike(reviewId, userId)
+            reviewRepository.increaseUseful(reviewId)
         } catch (ex: RuntimeException) {
             if (ex is DataIntegrityViolationException) {
                 val message = "Review with ID=$reviewId not found."
@@ -44,6 +45,7 @@ class ReviewServiceImpl(
         checkUserExists(userId)
         try {
             reviewRepository.addDislike(reviewId, userId)
+            reviewRepository.decreaseUseful(reviewId)
         } catch (ex: RuntimeException) {
             if (ex is DataIntegrityViolationException) {
                 val message = "Review with ID=$reviewId not found."
@@ -57,6 +59,7 @@ class ReviewServiceImpl(
         checkUserExists(userId)
         try {
             reviewRepository.deleteLike(reviewId, userId)
+            reviewRepository.decreaseUseful(reviewId)
         } catch (ex: RuntimeException) {
             if (ex is DataIntegrityViolationException) {
                 val message = "Review with ID=$reviewId not found."
@@ -70,6 +73,7 @@ class ReviewServiceImpl(
         checkUserExists(userId)
         try {
             reviewRepository.deleteDislike(reviewId, userId)
+            reviewRepository.increaseUseful(reviewId)
         } catch (ex: RuntimeException) {
             if (ex is DataIntegrityViolationException) {
                 val message = "Review with ID=$reviewId not found."
@@ -80,7 +84,7 @@ class ReviewServiceImpl(
     }
 
     override fun create(dto: ReviewDto): ReviewDto {
-        checkFilmUserExist(dto.filmId, dto.userId)
+        checkFilmUserExist(dto.filmId!!, dto.userId!!)
         val toSave = mapper.mapToDomain(dto)
         val saved = reviewRepository.save(toSave)
         applicationEventPublisher.publishEvent(
@@ -96,17 +100,17 @@ class ReviewServiceImpl(
     }
 
     override fun update(dto: ReviewDto): ReviewDto {
-        checkFilmUserExist(dto.filmId, dto.userId)
-        val rowsUpdated = reviewRepository.updateReview(dto.content, dto.isPositive, dto.id ?: 0)
-        if (rowsUpdated != 0) {
-            val msg = "Review with ID=${dto.id} not found."
+        checkFilmUserExist(dto.filmId!!, dto.userId!!)
+        val rowsUpdated = reviewRepository.updateReview(dto.content, dto.isPositive!!, dto.reviewId ?: 0)
+        if (rowsUpdated == 0) {
+            val msg = "Review with ID=${dto.reviewId} not found."
             throw ReviewServiceException(HttpStatus.NOT_FOUND.value(), msg)
         }
         applicationEventPublisher.publishEvent(
                 ReviewEvent(
                         source = this,
                         timeStamp = Instant.now().toEpochMilli(),
-                        reviewId = dto.id!!,
+                        reviewId = dto.reviewId!!,
                         operation = EventOperation.UPDATE,
                         userId = dto.userId
                 )
@@ -141,7 +145,11 @@ class ReviewServiceImpl(
     }
 
     override fun getAllReviews(filmId: Long, count: Int): List<ReviewDto> {
-        return reviewRepository.findAllByFilmIdOrderByUsefulDescId(filmId, Pageable.ofSize(count))
+        if (filmId == 0L) {
+            return reviewRepository.findAllReviews(count)
+                    .map { mapper.mapToDto(it) }
+        }
+        return reviewRepository.findAllReviewsForFilm(filmId, count)
                 .map { mapper.mapToDto(it) }
     }
 

@@ -101,7 +101,7 @@ class FilmServiceImpl(
         val dtos = films.map { mapper.mapToDto(it) }
         return when (sort) {
             SortBy.year -> dtos.sortedBy { it.releaseDate }
-            SortBy.likes -> dtos.sortedByDescending { it.rate }
+            SortBy.likes -> dtos.sortedWith(compareByDescending<FilmDto> { it.rate }.thenBy { it.id })
         }
     }
 
@@ -110,7 +110,7 @@ class FilmServiceImpl(
         by.forEach { b -> specBuilder.with(b) }
         val sort = Sort.by("rate")
                 .descending()
-                .and(Sort.by("id"))
+//                .and(Sort.by("id"))
 
         val films = filmRepo.findAll(specBuilder.build(query.lowercase()), sort)
         return films.map { mapper.mapToDto(it) }

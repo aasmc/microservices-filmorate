@@ -1,18 +1,29 @@
 package ru.aasmc.reviewsservice.repository
 
-import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import ru.aasmc.reviewsservice.model.Review
 
-interface ReviewRepository: JpaRepository<Review, Long> {
+interface ReviewRepository : JpaRepository<Review, Long> {
 
     @Modifying
     @Query("update reviews set content = ?, is_positive = ? where id = ?", nativeQuery = true)
     fun updateReview(content: String, isPositive: Boolean, reviewId: Long): Int
 
-    fun findAllByFilmIdOrderByUsefulDescId(filmId: Long, page: Pageable): List<Review>
+    @Modifying
+    @Query("update Reviews set useful = useful + 1 where id = ?", nativeQuery = true)
+    fun increaseUseful(reviewId: Long)
+
+    @Modifying
+    @Query("update Reviews set useful = useful - 1 where id = ?", nativeQuery = true)
+    fun decreaseUseful(reviewId: Long)
+
+    @Query("select * from Reviews where film_id = ? order by useful desc, id limit ?", nativeQuery = true)
+    fun findAllReviewsForFilm(filmId: Long, count: Int): List<Review>
+
+    @Query("select * from Reviews order by useful desc, id limit ?", nativeQuery = true)
+    fun findAllReviews(count: Int): List<Review>
 
     @Modifying
     @Query("""

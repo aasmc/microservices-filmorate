@@ -9,17 +9,17 @@ class ReviewMapper: Mapper<Review, ReviewDto> {
     override fun mapToDomain(dto: ReviewDto): Review {
         return Review(
                 content = dto.content,
-                isPositive = dto.isPositive,
-                userId = dto.userId,
-                filmId = dto.filmId,
+                isPositive = dto.isPositive!!,
+                userId = dto.userId!!,
+                filmId = dto.filmId!!,
                 useful = dto.useful ?: 0,
-                id = dto.id
+                id = dto.reviewId
         )
     }
 
     override fun mapToDto(domain: Review): ReviewDto {
         return ReviewDto(
-                id = domain.id,
+                reviewId = domain.id,
                 content = domain.content,
                 isPositive = domain.isPositive,
                 userId = domain.userId,
