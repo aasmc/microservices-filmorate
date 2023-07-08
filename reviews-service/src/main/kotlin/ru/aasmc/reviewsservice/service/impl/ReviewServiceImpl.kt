@@ -115,7 +115,8 @@ class ReviewServiceImpl(
                         userId = dto.userId
                 )
         )
-        return dto
+        val updated = reviewRepository.findById(dto.reviewId).get()
+        return mapper.mapToDto(updated)
     }
 
     override fun delete(reviewId: Long) {
