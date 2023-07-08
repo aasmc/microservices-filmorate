@@ -11,10 +11,10 @@ interface FilmLikeDataRepository : MongoRepository<FilmLike, FilmLikeId> {
 
     fun removeAllById_FilmIdAndTimestampLessThanEqual(filmId: Long, timestamp: Long)
 
-    @Query("{ '_id.userId': ?0 }", fields = "{'_id': 0, '_id.filmId': 1}")
+    @Query("{ '_id.userId': ?0 }")
     fun findAllFilmIdByUserId(userId: Long): List<FilmLike>
 
-    @Query("{'_id.filmId': ?0 }", fields = "{'_id': 0, 'mark': 1}")
+    @Query("{'_id.filmId': ?0 }")
     fun findAllMarksByFilmId(filmId: Long): List<FilmLike>
 
 }

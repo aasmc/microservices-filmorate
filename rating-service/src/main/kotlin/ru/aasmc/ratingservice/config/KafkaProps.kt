@@ -7,5 +7,8 @@ import org.springframework.boot.context.properties.ConstructorBinding
 class KafkaProps @ConstructorBinding constructor (
         var filmLikeTopic: String,
         var deleteAllLikesTopic: String,
-        var newRatingTopic: String
+        var newRatingTopic: String,
+        var bootstrapServers: String,
+        var clientId: String,
+        var autoOffsetReset: String
 )

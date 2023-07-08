@@ -21,7 +21,8 @@ class KafkaEventListenerImpl (
     @KafkaListener(
             topics = ["\${kafkaprops.filmLikeTopic}"],
             groupId = "\${spring.application.name}",
-            autoStartup = "true"
+            autoStartup = "true",
+            containerFactory = "containerFactoryFilmLike"
     )
     override fun consumeFilmLike(record: ConsumerRecord<String, FilmLikeDto>) {
         val dto = record.value()
@@ -37,7 +38,8 @@ class KafkaEventListenerImpl (
     @KafkaListener(
             topics = ["\${kafkaprops.deleteAllLikesTopic}"],
             groupId = "\${spring.application.name}",
-            autoStartup = "true"
+            autoStartup = "true",
+            containerFactory = "containerFactoryDeleteLikes"
     )
     override fun consumeDeleteLikes(record: ConsumerRecord<String, DeleteAllLikesDto>) {
         val dto = record.value()

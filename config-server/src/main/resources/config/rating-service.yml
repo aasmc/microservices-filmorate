@@ -9,15 +9,15 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.add.type.headers: false
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: ${spring.application.name}
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "*"
-        spring.json.value.default.type: ru.aasmc.ratingservice.dto.FilmLikeDto
+#    consumer:
+#      bootstrap-servers: localhost:9092
+#      group-id: ${spring.application.name}
+#      auto-offset-reset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#      properties:
+#        spring.json.trusted.packages: "*"
+#        spring.json.value.default.type: ru.aasmc.ratingservice.dto.FilmLikeDto
 
   data:
     mongodb:
@@ -43,6 +43,9 @@ kafkaprops:
   filmLikeTopic: "filmLikes"
   deleteAllLikesTopic: "deleteAllLikes"
   newRatingTopic: "newRatings"
+  bootstrapServers: ${spring.kafka.bootstrap-servers}
+  clientId: ${spring.kafka.client-id}
+  autoOffsetReset: earliest
 
 management:
   endpoints:

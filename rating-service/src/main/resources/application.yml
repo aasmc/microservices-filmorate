@@ -1,10 +1,6 @@
 server:
   port: 8090
 spring:
-  kafka:
-    consumer:
-      properties:
-        spring.json.value.default.type: ru.aasmc.ratingservice.dto.FilmLikeDto
   application:
     name: rating-service
   config:
