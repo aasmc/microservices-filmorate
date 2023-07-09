@@ -15,3 +15,9 @@ enum class EventOperation {
     REMOVE,
     REMOVE_ALL
 }
+
+
+class DeleteUserEvent(
+        source: Any,
+        val userId: Long
+)

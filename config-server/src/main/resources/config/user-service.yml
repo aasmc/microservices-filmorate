@@ -37,6 +37,7 @@ kafkaprops:
 
 urls:
   recommendationsClient: localhost:8082
+  eventService: localhost:8091
 
 management:
   endpoints:

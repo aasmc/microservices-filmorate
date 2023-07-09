@@ -46,6 +46,12 @@ spring:
             - Path=/rating/**
           filters:
             - RemoveRequestHeader= Cookie, Set-Cookie
+        - id: event-service
+          uri: lb://event-service
+          predicates:
+            - Path=/events/**
+          filters:
+            - RemoveRequestHeader= Cookie, Set-Cookie
 
 management:
   endpoints:

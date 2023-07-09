@@ -1,0 +1,45 @@
+server:
+  port: 8091
+
+spring:
+  kafka:
+    client-id: ${spring.application.name}
+    bootstrap-servers: localhost:9092
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5438/filmorate_events
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+eureka:
+  instance:
+    preferIpAddress: true
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:8085/eureka/
+  server:
+    waitTimeInMsWhenSyncEmpty: 5
+
+kafkaprops:
+  filmLikeTopic: "filmLikes"
+  reviewsTopic: "reviewEvents"
+  userFriendTopic: "userFriends"
+  bootstrapServers: ${spring.kafka.bootstrap-servers}
+  clientId: ${spring.kafka.client-id}
+  autoOffsetReset: latest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
