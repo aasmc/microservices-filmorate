@@ -13,6 +13,4 @@ interface KafkaEventListener {
 
     fun consumeReviewEvent(record: ConsumerRecord<String, ReviewEventDto>)
 
-    fun consumeDeleteUser(record: ConsumerRecord<String, Long>)
-
 }

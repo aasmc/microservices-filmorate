@@ -3,7 +3,6 @@ package ru.aasmc.eventservice.appevents.listener
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
-import ru.aasmc.eventservice.appevents.DeleteUserEvent
 import ru.aasmc.eventservice.appevents.FilmLikeEvent
 import ru.aasmc.eventservice.appevents.ReviewEvent
 import ru.aasmc.eventservice.appevents.UserFriendEvent
@@ -63,12 +62,6 @@ class AppEventListener(
                         entityId = event.dto.filmId
                 )
         )
-    }
-
-    @EventListener
-    fun consumeDeleteUserEvent(event: DeleteUserEvent) {
-        log.info("Consuming event: {}", event)
-        eventService.
     }
 
 }

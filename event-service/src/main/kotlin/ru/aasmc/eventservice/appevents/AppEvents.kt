@@ -19,8 +19,3 @@ class UserFriendEvent(
         source: Any,
         val dto: UserFriendEventDto
 ): ApplicationEvent(source)
-
-class DeleteUserEvent(
-        source: Any,
-        val userId: Long
-): ApplicationEvent(source)

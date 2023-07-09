@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Service
-import ru.aasmc.eventservice.appevents.DeleteUserEvent
 import ru.aasmc.eventservice.appevents.FilmLikeEvent
 import ru.aasmc.eventservice.appevents.ReviewEvent
 import ru.aasmc.eventservice.appevents.UserFriendEvent
@@ -72,20 +71,4 @@ class KafkaEventListenerImpl(
         )
     }
 
-    @KafkaListener(
-            topics = ["\${kafkaprops.deleteUser}"],
-            groupId = "\${spring.application.name}",
-            autoStartup = "true",
-            containerFactory = "containerFactoryDeleteUser"
-    )
-    override fun consumeDeleteUser(record: ConsumerRecord<String, Long>) {
-        val userId = record.value()
-        log.info("Consuming Delete User Event for user with ID: {}, from kafka topic: {}", userId, record.topic())
-        applicationEventPublisher.publishEvent(
-                DeleteUserEvent(
-                        source = this,
-                        userId = userId
-                )
-        )
-    }
 }
