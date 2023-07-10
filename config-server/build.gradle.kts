@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
     id("org.springframework.boot") version "2.7.13"
@@ -38,6 +39,12 @@ tasks.withType<KotlinCompile> {
         jvmTarget = "17"
     }
 }
+
+tasks.withType<BootBuildImage> {
+    imageName = project.name
+    environment = mapOf("BP_JVM_VERSION" to "17.*")
+}
+
 
 tasks.withType<Test> {
     useJUnitPlatform()
