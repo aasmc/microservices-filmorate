@@ -44,15 +44,6 @@ class UserServiceImpl(
     override fun addFriend(userId: Long, friendId: Long) {
         try {
             userRepository.addFriend(userId, friendId)
-            applicationEventPublisher.publishEvent(
-                    UserFriendEvent(
-                            source = this,
-                            timeStamp = Instant.now().toEpochMilli(),
-                            userId = userId,
-                            friendId = friendId,
-                            operation = EventOperation.ADD
-                    )
-            )
         } catch (e: RuntimeException) {
             if (e is DataIntegrityViolationException) {
                 val msg = "Either User with ID=$userId or Friend with ID=$friendId is not found in DB."
@@ -60,6 +51,15 @@ class UserServiceImpl(
             }
             throw e
         }
+        applicationEventPublisher.publishEvent(
+                UserFriendEvent(
+                        source = this,
+                        timeStamp = Instant.now().toEpochMilli(),
+                        userId = userId,
+                        friendId = friendId,
+                        operation = EventOperation.ADD
+                )
+        )
     }
 
     override fun getCommonFriends(userId: Long, friendId: Long): List<UserDto> {

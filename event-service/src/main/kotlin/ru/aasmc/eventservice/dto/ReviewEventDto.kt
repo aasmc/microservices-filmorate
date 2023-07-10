@@ -6,5 +6,5 @@ data class ReviewEventDto(
         val timestamp: Long,
         val reviewId: Long,
         val operation: CommonEventOperation,
-        val userid: Long
+        val userId: Long
 )

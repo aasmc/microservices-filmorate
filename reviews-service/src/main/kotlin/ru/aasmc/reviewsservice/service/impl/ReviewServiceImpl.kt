@@ -101,22 +101,24 @@ class ReviewServiceImpl(
 
     override fun update(dto: ReviewDto): ReviewDto {
         checkFilmUserExist(dto.filmId!!, dto.userId!!)
-        val rowsUpdated = reviewRepository.updateReview(dto.content, dto.isPositive!!, dto.reviewId ?: 0)
-        if (rowsUpdated == 0) {
-            val msg = "Review with ID=${dto.reviewId} not found."
-            throw ReviewServiceException(HttpStatus.NOT_FOUND.value(), msg)
-        }
+        val found = reviewRepository.findById(dto.reviewId ?: -1)
+                .orElseThrow {
+                    val msg = "Review with ID=${dto.reviewId} not found."
+                    throw ReviewServiceException(HttpStatus.NOT_FOUND.value(), msg)
+                }
+        found.content = dto.content
+        found.isPositive = dto.isPositive!!
+        reviewRepository.save(found)
         applicationEventPublisher.publishEvent(
                 ReviewEvent(
                         source = this,
                         timeStamp = Instant.now().toEpochMilli(),
-                        reviewId = dto.reviewId!!,
+                        reviewId = found.id!!,
                         operation = EventOperation.UPDATE,
-                        userId = dto.userId
+                        userId = found.userId
                 )
         )
-        val updated = reviewRepository.findById(dto.reviewId).get()
-        return mapper.mapToDto(updated)
+        return mapper.mapToDto(found)
     }
 
     override fun delete(reviewId: Long) {

@@ -42,7 +42,7 @@ class AppEventListener(
         eventService.saveEvent(
                 CommonEventDto(
                         timestamp = event.dto.timestamp,
-                        userId = event.dto.userid,
+                        userId = event.dto.userId,
                         eventType = CommonEventType.REVIEW,
                         operation = event.dto.operation,
                         entityId = event.dto.reviewId
