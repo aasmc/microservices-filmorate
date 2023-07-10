@@ -26,3 +26,10 @@ kafkaprops:
   filmLikeTopic: "filmLikes"
   deleteAllLikesTopic: "deleteAllLikes"
   newRatingTopic: "newRatings"
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
