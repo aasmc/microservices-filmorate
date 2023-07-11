@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import ru.aasmc.filmservice.dto.DirectorDto
 import ru.aasmc.filmservice.dto.DirectorRequest
+import ru.aasmc.filmservice.exceptions.ErrorResponse
 import ru.aasmc.filmservice.service.DirectorService
 import javax.validation.Valid
 
@@ -31,19 +32,11 @@ class DirectorController(
     @ApiResponses(value = [
         ApiResponse(
                 responseCode = "200",
-                description = "List of all film directors.",
-                content = [
-                    Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            array = (
-                                    ArraySchema(
-                                            schema = Schema(
-                                                    implementation = DirectorDto::class
-                                            )
-                                         )
-                                    )
-                    )
-                ]
+                description = "Success",
+                content = [Content(
+                        mediaType = MediaType.APPLICATION_JSON_VALUE,
+                        array = (ArraySchema(schema = Schema(implementation = DirectorDto::class)))
+                )]
         )
     ])
     @GetMapping
@@ -52,24 +45,97 @@ class DirectorController(
         return service.getAll()
     }
 
+
+    @Operation(summary = "Get film director by ID.")
+    @ApiResponses(value = [
+        ApiResponse(
+                responseCode = "200",
+                description = "Success",
+                content = [Content(
+                        mediaType = MediaType.APPLICATION_JSON_VALUE,
+                        schema = Schema(implementation = DirectorDto::class))
+                ]),
+        ApiResponse(
+                responseCode = "404",
+                description = "Cannot find director by ID.",
+                content = [
+                    Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = Schema(implementation = ErrorResponse::class))
+                ])
+    ])
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getById(@PathVariable("id") id: Long): DirectorDto {
         return service.getById(id)
     }
 
+
+    @Operation(summary = "Creates a film director if the request is valid.")
+    @ApiResponses(value = [
+        ApiResponse(
+                responseCode = "201",
+                description = "Successfully created film director.",
+                content = [Content(
+                        mediaType = MediaType.APPLICATION_JSON_VALUE,
+                        schema = Schema(implementation = DirectorDto::class)
+                )]
+        ),
+        ApiResponse(
+                responseCode = "400",
+                description = "Invalid request.",
+                content = [
+                    Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = Schema(implementation = ErrorResponse::class))
+                ])
+    ])
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody @Valid request: DirectorRequest): DirectorDto {
         return service.create(request)
     }
 
+    @Operation(summary = "Updating film director.")
+    @ApiResponses(value = [
+        ApiResponse(
+                responseCode = "200",
+                description = "Successfully updated film director",
+                content = [Content(
+                        mediaType = MediaType.APPLICATION_JSON_VALUE,
+                        schema = Schema(implementation = DirectorDto::class)
+                )]
+        ),
+        ApiResponse(
+                responseCode = "404",
+                description = "Cannot find director by ID.",
+                content = [
+                    Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = Schema(implementation = ErrorResponse::class))
+                ]),
+        ApiResponse(
+                responseCode = "400",
+                description = "Invalid request.",
+                content = [
+                    Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = Schema(implementation = ErrorResponse::class))
+                ])
+    ])
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     fun update(@RequestBody @Valid request: DirectorRequest): DirectorDto {
         return service.update(request)
     }
 
+    @Operation(summary = "Delete film directory by id")
+    @ApiResponses(value = [
+        ApiResponse(
+                responseCode = "204",
+                description = "Successfully deleted film director."
+        )
+    ])
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(@PathVariable("id") id: Long) {
