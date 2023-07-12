@@ -39,6 +39,8 @@ docker-compose up -d
 
 ## Общая схема
 
+![alt text](https://github.com/aasmc/microservices-filmorate/blob/master/art/architecture.png?raw=true)
+
 ## Архитектура
 ### Gateway
 В качестве единой точки входа запросов от пользователей является Gateway Service, реализованный на основе Spring Cloud Gateway.
