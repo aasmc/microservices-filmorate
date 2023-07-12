@@ -27,6 +27,8 @@ class UserServiceImpl(
 ) : UserService {
 
     override fun removeFriend(userId: Long, friendId: Long) {
+        checkUserExists(userId)
+        checkUserExists(friendId)
         val deletedRows = userRepository.deleteFriend(userId, friendId)
         if (deletedRows != 0) {
             applicationEventPublisher.publishEvent(
@@ -124,7 +126,14 @@ class UserServiceImpl(
     }
 
     override fun getRecommendations(userId: Long): List<FilmDto> {
+        checkUserExists(userId)
         return client.getRecommendations(userId)
+    }
+
+    private fun checkUserExists(userId: Long) {
+        if (!isUserExists(userId)) {
+            throw UserServiceException(HttpStatus.NOT_FOUND.value(), "User with ID=$userId not found.")
+        }
     }
 
     private fun getUserByIdOrThrow(userId: Long): User {

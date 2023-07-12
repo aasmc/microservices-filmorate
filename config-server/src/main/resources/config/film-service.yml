@@ -52,6 +52,13 @@ kafkaprops:
 urls:
   userService: localhost:8088
 
+springdoc:
+  api-docs:
+    path: /films/api-docs
+  swagger-ui:
+    path: /films/swagger-ui.html
+    enabled: true
+
 management:
   endpoints:
     web:

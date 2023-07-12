@@ -20,3 +20,10 @@ spring:
 
 urls:
   recommendationsClient: localhost:8082
+
+springdoc:
+  api-docs:
+    path: /users/api-docs
+  swagger-ui:
+    path: /users/swagger-ui.html
+    enabled: true

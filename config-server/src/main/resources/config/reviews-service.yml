@@ -35,6 +35,13 @@ spring:
 kafkaprops:
   reviewsTopic: "reviewEvents"
 
+springdoc:
+  api-docs:
+    path: /reviews/api-docs
+  swagger-ui:
+    path: /reviews/swagger-ui.html
+    enabled: true
+
 management:
   endpoints:
     web:

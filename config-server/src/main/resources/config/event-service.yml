@@ -38,6 +38,14 @@ kafkaprops:
   clientId: ${spring.kafka.client-id}
   autoOffsetReset: latest
 
+
+springdoc:
+  api-docs:
+    path: /events/api-docs
+  swagger-ui:
+    path: /events/swagger-ui.html
+    enabled: true
+
 management:
   endpoints:
     web:

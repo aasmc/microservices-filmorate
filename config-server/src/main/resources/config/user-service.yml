@@ -39,6 +39,13 @@ urls:
   recommendationsClient: localhost:8082
   eventService: localhost:8091
 
+springdoc:
+  api-docs:
+    path: /users/api-docs
+  swagger-ui:
+    path: /users/swagger-ui.html
+    enabled: true
+
 management:
   endpoints:
     web:

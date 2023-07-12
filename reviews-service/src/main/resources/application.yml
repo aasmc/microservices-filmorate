@@ -21,3 +21,10 @@ spring:
 urls:
   userService: localhost:8088
   filmService: localhost:8082
+
+springdoc:
+  api-docs:
+    path: /reviews/api-docs
+  swagger-ui:
+    path: /reviews/swagger-ui.html
+    enabled: true

@@ -29,7 +29,7 @@ kafkaprops:
 
 springdoc:
   api-docs:
-    path: /api-docs
+    path: /films/api-docs
   swagger-ui:
-    path: /swagger-ui.html
+    path: /films/swagger-ui.html
     enabled: true

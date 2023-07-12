@@ -129,7 +129,7 @@ class DirectorController(
         return service.update(request)
     }
 
-    @Operation(summary = "Delete film directory by id")
+    @Operation(summary = "Delete film director by id")
     @ApiResponses(value = [
         ApiResponse(
                 responseCode = "204",
