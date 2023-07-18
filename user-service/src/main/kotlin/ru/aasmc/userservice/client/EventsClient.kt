@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import ru.aasmc.userservice.dto.CommonEventDto
 
-@FeignClient(name = "events-client", url = "\${urls.eventService}")
+@FeignClient("event-service")
 interface EventsClient {
 
     @GetMapping("/events/{userId}/feed")

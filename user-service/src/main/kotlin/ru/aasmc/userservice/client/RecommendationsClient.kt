@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import ru.aasmc.userservice.dto.FilmDto
 
-@FeignClient(name = "recommendations-service-client", url = "\${urls.recommendationsClient}")
+@FeignClient("film-service")
 interface RecommendationsClient {
 
     @GetMapping("/recommendations/{id}")
