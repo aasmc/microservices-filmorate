@@ -18,6 +18,19 @@ spring:
         max-interval: 2000
         multiplier: 1.1
 
+resilience4j:
+  ratelimiter:
+    configs:
+      default:
+        timeout-duration: 1000ms
+        limit-refresh-period: 1ms
+        limit-for-period: 10
+    instances:
+      userClientRateLimiter:
+        base-config: default
+      ratingClientRateLimiter:
+        base-config: default
+
 urls:
   userService: localhost:8088
   ratingService: localhost:8090

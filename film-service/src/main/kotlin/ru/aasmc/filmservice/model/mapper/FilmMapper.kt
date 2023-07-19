@@ -1,5 +1,6 @@
 package ru.aasmc.filmservice.model.mapper
 
+import feign.FeignException
 import org.springframework.stereotype.Component
 import ru.aasmc.filmservice.dto.FilmDto
 import ru.aasmc.filmservice.dto.FilmRequest

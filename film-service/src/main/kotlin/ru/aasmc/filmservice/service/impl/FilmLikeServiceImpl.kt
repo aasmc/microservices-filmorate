@@ -2,11 +2,11 @@ package ru.aasmc.filmservice.service.impl
 
 import io.github.resilience4j.bulkhead.annotation.Bulkhead
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
+import io.github.resilience4j.retry.annotation.Retry
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.aasmc.filmservice.client.UserServiceClient
 import ru.aasmc.filmservice.dto.DeleteAllLikesDto
 import ru.aasmc.filmservice.dto.EventOperation
 import ru.aasmc.filmservice.dto.FilmLikeDto
@@ -14,6 +14,7 @@ import ru.aasmc.filmservice.exceptions.ResourceNotFoundException
 import ru.aasmc.filmservice.kafka.KafkaProps
 import ru.aasmc.filmservice.service.FilmLikeService
 import ru.aasmc.filmservice.service.FilmService
+import ru.aasmc.filmservice.service.UserService
 import java.time.Instant
 
 private val log = LoggerFactory.getLogger(FilmLikeServiceImpl::class.java)
@@ -25,7 +26,7 @@ class FilmLikeServiceImpl(
         private val deleteAllKafkaTemplate: KafkaTemplate<String, DeleteAllLikesDto>,
         private val kafkaProps: KafkaProps,
         private val filmService: FilmService,
-        private val userClient: UserServiceClient
+        private val userService: UserService
 ) : FilmLikeService {
     override fun addLike(filmId: Long, userId: Long, mark: Int) {
         checkFilmId(filmId)
@@ -93,10 +94,8 @@ class FilmLikeServiceImpl(
         }
     }
 
-    @CircuitBreaker(name = "userClient")
-    @Bulkhead(name = "userClientBulkhead", type = Bulkhead.Type.THREADPOOL)
-    fun checkUserId(userId: Long) {
-        if (!userClient.isUserExists(userId)) {
+    private fun checkUserId(userId: Long) {
+        if (!userService.isUserExists(userId)) {
             throw ResourceNotFoundException(message = "User with ID=$userId not found in DB.")
         }
     }
