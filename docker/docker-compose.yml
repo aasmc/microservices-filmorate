@@ -1,5 +1,15 @@
 version: '3.9'
 services:
+  redis-gateway:
+    image: "redis:7.0"
+    container_name: "redis-gateway"
+    ports:
+      - 6379:6379
+    networks:
+      backend:
+        aliases:
+          - "redis-gateway"
+
   postgres-film:
     image: postgres:15.3
     ports:
