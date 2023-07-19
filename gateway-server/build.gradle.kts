@@ -20,6 +20,7 @@ repositories {
 }
 
 extra["springCloudVersion"] = "2021.0.7"
+extra["testContainersVersion"] = "1.17.3"
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -28,12 +29,15 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+    implementation("org.springframework.session:spring-session-data-redis")
+    testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+        mavenBom("org.testcontainers:testcontainers-bom:${property("testContainersVersion")}")
     }
 }
 

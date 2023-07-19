@@ -19,9 +19,17 @@ spring:
     host: localhost
     port: 6379
     timeout: 1s
+  session:
+    store-type: redis
+    timeout: 10m
+    redis:
+      namespace: filmorate:gateway
   cloud:
     gateway:
       default-filters:
+        # Instructs Spring Cloud Gateway to save session before forwarding
+        # requests to downstream services.
+        - SaveSession
         - name: RequestRateLimiter
           args:
             redis-rate-limiter:
