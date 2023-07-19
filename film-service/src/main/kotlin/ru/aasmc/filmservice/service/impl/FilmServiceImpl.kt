@@ -6,7 +6,6 @@ import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.aasmc.filmservice.appevents.AllLikesDeletedEvent
-import ru.aasmc.filmservice.client.RatingServiceClient
 import ru.aasmc.filmservice.dto.FilmDto
 import ru.aasmc.filmservice.dto.FilmRequest
 import ru.aasmc.filmservice.exceptions.ResourceNotFoundException
@@ -14,6 +13,7 @@ import ru.aasmc.filmservice.model.SearchBy
 import ru.aasmc.filmservice.model.SortBy
 import ru.aasmc.filmservice.model.mapper.FilmMapper
 import ru.aasmc.filmservice.service.FilmService
+import ru.aasmc.filmservice.service.RatingService
 import ru.aasmc.filmservice.storage.DirectorRepository
 import ru.aasmc.filmservice.storage.FilmRepository
 import ru.aasmc.filmservice.storage.FilmSpecificationBuilder
@@ -25,7 +25,7 @@ class FilmServiceImpl(
         private val mapper: FilmMapper,
         private val applicationEventPublisher: ApplicationEventPublisher,
         private val directorRepo: DirectorRepository,
-        private val ratingClient: RatingServiceClient
+        private val ratingService: RatingService
 ) : FilmService {
 
     override fun getById(filmId: Long): FilmDto {
@@ -110,7 +110,6 @@ class FilmServiceImpl(
         by.forEach { b -> specBuilder.with(b) }
         val sort = Sort.by("rate")
                 .descending()
-//                .and(Sort.by("id"))
 
         val films = filmRepo.findAll(specBuilder.build(query.lowercase()), sort)
         return films.map { mapper.mapToDto(it) }
@@ -125,8 +124,8 @@ class FilmServiceImpl(
     }
 
     override fun getCommonFilms(userId: Long, friendId: Long): List<FilmDto> {
-        val userFilmIds = ratingClient.getFilmIdsOfUser(userId)
-        val friendFilmIds = ratingClient.getFilmIdsOfUser(friendId)
+        val userFilmIds = getFilmIdsForUser(userId)
+        val friendFilmIds = getFilmIdsForUser(friendId)
         val userFilms = filmRepo.findAllByIdInOrderByRateDesc(userFilmIds)
                 .toHashSet()
         val friendFilms = filmRepo.findAllByIdInOrderByRateDesc(friendFilmIds)
@@ -134,6 +133,9 @@ class FilmServiceImpl(
         userFilms.retainAll(friendFilms)
         return userFilms.map { mapper.mapToDto(it) }
                 .sortedByDescending { it.rate }
+    }
+    private fun getFilmIdsForUser(userId: Long): List<Long> {
+        return ratingService.getFilmIdsOfUser(userId)
     }
 
     @Transactional
