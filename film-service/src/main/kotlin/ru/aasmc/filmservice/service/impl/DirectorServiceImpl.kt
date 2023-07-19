@@ -1,6 +1,6 @@
 package ru.aasmc.filmservice.service.impl
 
-import org.springframework.dao.EmptyResultDataAccessException
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Isolation
@@ -18,11 +18,14 @@ import ru.aasmc.filmservice.storage.DirectorRepository
 class DirectorServiceImpl(
         private val repo: DirectorRepository
 ) : DirectorService {
+
+    @CircuitBreaker(name = "directorService")
     override fun getAll(): List<DirectorDto> {
         return repo.findAll()
                 .map { it.mapToDto() }
     }
 
+    @CircuitBreaker(name = "directorService")
     override fun getById(id: Long): DirectorDto {
         return repo.findById(id)
                 .orElseThrow {

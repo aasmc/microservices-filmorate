@@ -41,7 +41,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/filmorate_dev
     username: postgres
-    password: {cipher} 7ae9c6ddf90efd4b907056ea390955641bd58ab29491025f4b596d83fcfaf01c
+    password: '{cipher}7ae9c6ddf90efd4b907056ea390955641bd58ab29491025f4b596d83fcfaf01c'
     driver-class-name: org.postgresql.Driver
 
 kafkaprops:
@@ -59,8 +59,69 @@ springdoc:
     path: /films/swagger-ui.html
     enabled: true
 
+logging:
+  group:
+    circuitbreaker: io.github.resilience4j, org.springframework.cloud.circuitbreaker
+  level:
+    circuitbreaker: info
+  pattern: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+        recordExceptions:
+          - org.springframework.web.client.HttpServerErrorException
+          - java.util.concurrent.TimeoutException
+          - java.io.IOException
+    instances:
+      userClient:
+        base-config: default
+        register-health-indicator: true
+        slidingWindowSize: 6
+        permittedNumberOfCallsInHalfOpenState: 4
+        waitDurationInOpenState: 20s
+        failureRateThreshold: 60
+        recordExceptions:
+          - feign.FeignException
+          - java.util.concurrent.TimeoutException
+          - java.io.IOException
+        ignoreExceptions:
+          - ru.aasmc.filmservice.exceptions.ResourceNotFoundException
+      directorService:
+        base-config: default
+        register-health-indicator: true
+
 management:
+  health:
+    circuitbreakers:
+      enabled: true
+    ratelimiters:
+      enabled: true
+  metrics:
+    enable:
+      resilience4j.circuitbreaker.calls: true
   endpoints:
     web:
       exposure:
         include: "*"
+  endpoint:
+    metrics:
+      enabled: true
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState

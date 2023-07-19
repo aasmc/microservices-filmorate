@@ -29,7 +29,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5436/filmorate_review
     username: postgres
-    password: {cipher} 7ae9c6ddf90efd4b907056ea390955641bd58ab29491025f4b596d83fcfaf01c
+    password: '{cipher}7ae9c6ddf90efd4b907056ea390955641bd58ab29491025f4b596d83fcfaf01c'
     driver-class-name: org.postgresql.Driver
 
 kafkaprops:
