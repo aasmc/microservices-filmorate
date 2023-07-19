@@ -2,7 +2,6 @@ package ru.aasmc.filmservice.service.impl
 
 import io.github.resilience4j.bulkhead.annotation.Bulkhead
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
-import io.github.resilience4j.ratelimiter.annotation.RateLimiter
 import io.github.resilience4j.retry.annotation.Retry
 import org.springframework.stereotype.Service
 import ru.aasmc.filmservice.client.RatingServiceClient
@@ -16,7 +15,6 @@ class RatingServiceImpl(
     @Retry(name = "retryRatingClient")
     @CircuitBreaker(name = "ratingClient")
     @Bulkhead(name = "ratingClientBulkhead", type = Bulkhead.Type.THREADPOOL)
-    @RateLimiter(name = "ratingClientRateLimiter")
     override fun getFilmIdsOfUser(userId: Long): List<Long> {
         return ratingServiceClient.getFilmIdsOfUser(userId)
     }
@@ -24,7 +22,6 @@ class RatingServiceImpl(
     @Retry(name = "retryRatingClient")
     @CircuitBreaker(name = "ratingClient")
     @Bulkhead(name = "ratingClientBulkhead", type = Bulkhead.Type.THREADPOOL)
-    @RateLimiter(name = "ratingClientRateLimiter")
     override fun getFilmRating(filmId: Long): Double {
         return ratingServiceClient.getFilmRating(filmId)
     }
@@ -32,7 +29,6 @@ class RatingServiceImpl(
     @Retry(name = "retryRatingClient")
     @CircuitBreaker(name = "ratingClient")
     @Bulkhead(name = "ratingClientBulkhead", type = Bulkhead.Type.THREADPOOL)
-    @RateLimiter(name = "ratingClientRateLimiter")
     override fun getRecommendedFilmIdsforUser(userId: Long): List<Long> {
         return ratingServiceClient.getRecommendedFilmIdsforUser(userId)
     }

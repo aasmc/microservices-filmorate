@@ -1,8 +1,5 @@
 package ru.aasmc.filmservice.service.impl
 
-import io.github.resilience4j.bulkhead.annotation.Bulkhead
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
-import io.github.resilience4j.retry.annotation.Retry
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
