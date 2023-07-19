@@ -1,5 +1,6 @@
 package ru.aasmc.filmservice.service.impl
 
+import io.github.resilience4j.bulkhead.annotation.Bulkhead
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
@@ -93,6 +94,7 @@ class FilmLikeServiceImpl(
     }
 
     @CircuitBreaker(name = "userClient")
+    @Bulkhead(name = "userClientBulkhead")
     fun checkUserId(userId: Long) {
         if (!userClient.isUserExists(userId)) {
             throw ResourceNotFoundException(message = "User with ID=$userId not found in DB.")

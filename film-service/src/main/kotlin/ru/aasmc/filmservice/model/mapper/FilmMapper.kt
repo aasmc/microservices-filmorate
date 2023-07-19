@@ -1,12 +1,12 @@
 package ru.aasmc.filmservice.model.mapper
 
 import org.springframework.stereotype.Component
-import ru.aasmc.filmservice.client.RatingServiceClient
 import ru.aasmc.filmservice.dto.FilmDto
 import ru.aasmc.filmservice.dto.FilmRequest
 import ru.aasmc.filmservice.exceptions.ResourceNotFoundException
 import ru.aasmc.filmservice.model.Film
 import ru.aasmc.filmservice.model.mapToDto
+import ru.aasmc.filmservice.service.RatingService
 import ru.aasmc.filmservice.storage.DirectorRepository
 import ru.aasmc.filmservice.storage.GenreRepository
 import ru.aasmc.filmservice.storage.MpaRepository
@@ -16,7 +16,7 @@ class FilmMapper(
         private val genreRepository: GenreRepository,
         private val mpaRepository: MpaRepository,
         private val directorRepository: DirectorRepository,
-        private val ratingClient: RatingServiceClient
+        private val ratingService: RatingService
 ) : Mapper<Film, FilmRequest, FilmDto> {
     override fun mapToDomain(dto: FilmRequest): Film {
         val mpa = mpaRepository.findById(dto.mpa.id)
@@ -52,8 +52,8 @@ class FilmMapper(
         )
     }
 
-    private fun calculateRate(filmId: Long?): Double {
+    fun calculateRate(filmId: Long?): Double {
         if (filmId == null) return 0.0
-        return ratingClient.getFilmRating(filmId)
+        return ratingService.getFilmRating(filmId)
     }
 }

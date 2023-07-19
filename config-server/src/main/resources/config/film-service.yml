@@ -100,6 +100,30 @@ resilience4j:
       directorService:
         base-config: default
         register-health-indicator: true
+      ratingClient:
+        base-config: default
+        register-health-indicator: true
+        slidingWindowSize: 6
+        permittedNumberOfCallsInHalfOpenState: 4
+        waitDurationInOpenState: 20s
+        failureRateThreshold: 60
+        recordExceptions:
+          - feign.FeignException
+          - java.util.concurrent.TimeoutException
+          - java.io.IOException
+  thread-pool-bulkhead:
+    configs:
+      default:
+        max-thread-pool-size: 4
+        core-thread-pool-size: 2
+        queue-capacity: 10
+        keep-alive-duration: 20ms
+    instances:
+      userClientBulkhead:
+        base-config: default
+      ratingClientBulkhead:
+        base-config: default
+
 
 management:
   health:
